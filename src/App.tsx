@@ -1,23 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { updateTitle } from './slices/comment';
 function App() {
+  //for querying redux state
+  const comments = useSelector((state: any) => state.comments);
+
+  //for dispatching an action to state
+  const dispatch = useDispatch();
+
+  const [titleInput, setTitleInput] = useState("");
   return (
     <div className="App">
+      <h1>Redux slice state test</h1>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.tsx</code> and save to reload.
+          {comments.title}<br />
+          {comments.description}
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <input type="text" onChange={(e) => {
+          setTitleInput(e.target.value);
+        }}></input>
+
+        <button onClick={() => {
+          dispatch(updateTitle(titleInput))
+        }}>Send</button>
       </header>
     </div>
   );
